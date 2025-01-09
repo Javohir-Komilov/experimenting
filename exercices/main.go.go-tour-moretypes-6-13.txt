@@ -1,0 +1,47 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"math/rand"
+	"os"
+	"strconv"
+	"strings"
+)
+
+func getInput() string {
+	reader := bufio.NewReader(os.Stdin)
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		log.Println("Failed to read input:", err)
+		return ""
+	}
+	return strings.TrimSpace(input)
+}
+
+func shuffle(nums []int, n int) []int {
+	slice1 := nums[:n]
+	slice2 := nums[n:]
+	var newNums []int
+	for i := 0; i < n; i++ {
+		newNums = append(newNums, slice1[i], slice2[i])
+	}
+	return newNums
+}
+
+func main() {
+	for {
+		fmt.Print("\nEnter the length of array : ")
+		input := getInput()
+
+		length, err := strconv.Atoi(input)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		array := rand.Perm(length)
+		fmt.Println("Unshuffled array :", array)
+		fmt.Println("Shuffled aray :", shuffle(array, length/2))
+	}
+}

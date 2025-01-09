@@ -1,0 +1,14 @@
+package main
+
+import "fmt"
+
+func main() {
+	v := 42
+	fmt.Printf("v is of type %T with value %v\n", v, v)
+	
+	z := float64(v)
+	fmt.Printf("z is of type %T with value %v\n", z, z)
+
+	y := uint(z)
+	fmt.Printf("y is of type %T with value %v\n", y, y)
+}

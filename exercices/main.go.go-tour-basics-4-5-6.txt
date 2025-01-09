@@ -1,0 +1,42 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+	"strings"
+	"time"
+)
+
+func sayHello(name string) string {
+	return fmt.Sprintf("Hello, %s!", name)
+}
+
+func sayGoodbye(name string) string {
+	return fmt.Sprintf("Goodbye, %s!", name)
+}
+
+func getInput() string {
+	reader := bufio.NewReader(os.Stdin)
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		log.Println("Failed to read input:", err)
+		return ""
+	}
+	return strings.TrimSpace(input)
+}
+
+func main() {
+	fmt.Print("Enter your name: ")
+	name := getInput()
+
+	if name == "" {
+		fmt.Println("No input provided.")
+		return
+	}
+
+	fmt.Println(sayHello(name))
+	time.Sleep(3 * time.Second)
+	fmt.Println(sayGoodbye(name))
+}

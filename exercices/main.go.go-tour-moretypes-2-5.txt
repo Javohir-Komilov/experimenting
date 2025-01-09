@@ -1,0 +1,28 @@
+package main
+
+import "fmt"
+
+type Person struct {
+	FirstName string
+	LastName  string
+	Age       int
+}
+
+func main() {
+	person := Person{
+		FirstName: "Aziz",
+		LastName:  "Karimov",
+		Age:       20,
+	}
+
+	fmt.Println("First Name:", person.FirstName)
+	fmt.Println("Last Name:", person.LastName)
+	fmt.Println("Age:", person.Age)
+
+	person.Age = 21
+	fmt.Println("Updated Age:", person.Age)
+
+	personPointer := &person
+	personPointer.Age = 22
+	fmt.Println("Updated Age via pointer:", person.Age)
+}

@@ -1,0 +1,13 @@
+package main
+
+import (
+	"fmt"
+
+	"github.com/javohir-komilov/experimenting/pkg/calculator"
+)
+
+func main() {
+	c := calculator.New()
+	resultAdd := c.Add(1, 2)
+	fmt.Println(resultAdd)
+}

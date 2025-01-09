@@ -1,0 +1,12 @@
+package main
+
+import (
+	"fmt"
+
+	"github.com/javohir-komilov/experimenting/pkg/mathconst"
+)
+
+func main() {
+	result := mathconst.Pi + mathconst.GoldenRatio
+	fmt.Printf("The result of addition of pi (%v) and \"Golden ratio\" (%v) is = %v ", mathconst.Pi, mathconst.GoldenRatio, result)
+}

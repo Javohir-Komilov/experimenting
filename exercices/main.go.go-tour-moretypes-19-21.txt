@@ -1,0 +1,42 @@
+package main
+
+import "fmt"
+
+func main() {
+
+	// Creating a map
+	studentGrades := map[string]int{
+		"John":    90,
+		"Sarah":   85,
+		"Michael": 88,
+		"Anna":    92,
+	}
+
+	// Printing the map
+	fmt.Println("Grades of students:")
+	for name, grade := range studentGrades {
+		fmt.Printf("%s: %d\n", name, grade)
+	}
+
+	// Adding a new student
+	studentGrades["Lucas"] = 87
+	fmt.Println("\nAfter adding a new student:")
+	for name, grade := range studentGrades {
+		fmt.Printf("%s: %d\n", name, grade)
+	}
+
+	// Deleting a student
+	delete(studentGrades, "John")
+	fmt.Println("\nAfter deleting John:")
+	for name, grade := range studentGrades {
+		fmt.Printf("%s: %d\n", name, grade)
+	}
+
+	// Checking if Sarah exists
+	grade, exists := studentGrades["Sarah"]
+	if exists {
+		fmt.Printf("\nSarah's grade: %d\n", grade)
+	} else {
+		fmt.Println("\nSarah not found in the map.")
+	}
+}

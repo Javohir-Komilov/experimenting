@@ -1,0 +1,32 @@
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	var (
+		isActive  bool    = true
+		name      string  = "GoLang"
+		age       int     = 25
+		smallInt  int8    = 127
+		bigUint   uint64  = 18446744073709551615
+		pi        float64 = 3.141592653589793
+		character rune    = 'G'
+		complexNum complex128 = complex(1.2, 3.4)
+	)
+
+	var ageFloat float64 = float64(age)
+	var smallIntUint uint = uint(smallInt)
+
+	fmt.Println("Boolean value:", isActive)
+	fmt.Println("String value:", name)
+	fmt.Println("Integer value (int):", age)
+	fmt.Println("Converted to float64:", ageFloat)
+	fmt.Println("Integer value (int8):", smallInt)
+	fmt.Println("Converted to uint:", smallIntUint)
+	fmt.Println("Unsigned integer (uint64):", bigUint)
+	fmt.Println("Floating point value (float64):", pi)
+	fmt.Println("Rune value (Unicode code point):", character)
+	fmt.Printf("Complex number: %v (real: %f, imaginary: %f)\n", complexNum, real(complexNum), imag(complexNum))
+}

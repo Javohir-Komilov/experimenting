@@ -1,0 +1,24 @@
+package main
+
+import "fmt"
+
+func first() {
+	defer fmt.Println("First deferred")
+	fmt.Println("First function")
+}
+
+func second() {
+	defer fmt.Println("Second deferred")
+	fmt.Println("Second function")
+}
+
+func third() {
+	defer fmt.Println("Third deferred")
+	fmt.Println("Third function")
+}
+
+func main() {
+	first()
+	second()
+	third()
+}
