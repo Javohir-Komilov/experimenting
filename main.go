@@ -2,61 +2,42 @@ package main
 
 import (
 	"fmt"
-	"math"
+	"io"
+	"os"
+	"strings"
 )
 
-type PaymentMethod interface {
-	ProcessPayment(amount float64) string
+type MyReader struct {
+	data string
 }
 
-type CreditCard struct {
-	CardNumber string
-}
-
-func (c CreditCard) ProcessPayment(amount float64) string {
-	return fmt.Sprintf("Processed payment of $%.2f using Credit Card ending in %s", amount, c.CardNumber[len(c.CardNumber)-4:])
-}
-
-type PayPal struct {
-	Email string
-}
-
-func (p PayPal) ProcessPayment(amount float64) string {
-	return fmt.Sprintf("Processed payment of $%.2f using PayPal account %s", amount, p.Email)
-}
-
-type ShoppingCart struct {
-	items []float64
-}
-
-func (sc *ShoppingCart) AddItem(price float64) {
-	sc.items = append(sc.items, price)
-}
-
-func (sc ShoppingCart) TotalAmount() float64 {
-	total := 0.0
-	for _, price := range sc.items {
-		total += price
+func (r *MyReader) Read(p []byte) (n int, err error) {
+	if len(r.data) == 0 {
+		return 0, io.EOF
 	}
-	return math.Round(total*100) / 100
-}
-
-func (sc ShoppingCart) Checkout(pm PaymentMethod) {
-	total := sc.TotalAmount()
-	fmt.Println(pm.ProcessPayment(total))
+	n = copy(p, r.data)
+	r.data = r.data[n:]
+	return n, nil
 }
 
 func main() {
-	cart := ShoppingCart{}
-	cart.AddItem(29.99)
-	cart.AddItem(49.50)
-	cart.AddItem(15.75)
+	reader := &MyReader{data: "Hello, Golang!"}
+	buf := make([]byte, 8)
 
-	fmt.Printf("Total amount in cart: $%.2f\n", cart.TotalAmount())
+	for {
+		n, err := reader.Read(buf)
+		fmt.Print(string(buf[:n]))
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			fmt.Println("Error:", err)
+			break
+		}
+	}
 
-	creditCard := CreditCard{CardNumber: "1234567812345678"}
-	payPal := PayPal{Email: "user@example.com"}
+	fmt.Println()
 
-	cart.Checkout(creditCard)
-	cart.Checkout(payPal)
+	strReader := strings.NewReader("Go is awesome!")
+	io.Copy(os.Stdout, strReader)
 }
