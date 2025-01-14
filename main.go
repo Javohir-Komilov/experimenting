@@ -2,31 +2,55 @@ package main
 
 import (
 	"fmt"
-	"sync"
+	"time"
 )
- 
-var counter int = 0     
-func main() {
- 
-    ch := make(chan bool)       
-    var mutex sync.Mutex     
-    for i := 1; i < 5; i++{
-        go count(i, ch, &mutex)
-    }
-     
-    for i := 1; i < 5; i++{
-        <-ch
-    }
-     
-    fmt.Println("The End")
+
+func sendData(ch chan int) {
+	for i := 1; i <= 5; i++ {
+		ch <- i
+		time.Sleep(1 * time.Second)
+	}
+	close(ch)
 }
-func count (number int, ch chan bool, mutex *sync.Mutex){
-    mutex.Lock()
-    counter = 0
-    for k := 1; k <= 5; k++{
-        counter++
-        fmt.Println("Goroutine", number, "-", counter)
-    }
-    mutex.Unlock()
-    ch <- true
+
+func sendMessage(ch chan string) {
+	for i := 1; i <= 3; i++ {
+		ch <- fmt.Sprintf("Message %d", i)
+		time.Sleep(2 * time.Second)
+	}
+	close(ch)
+}
+
+func main() {
+	ch1 := make(chan int)
+	ch2 := make(chan string)
+
+	go sendData(ch1)
+	go sendMessage(ch2)
+
+	for {
+		select {
+		case v1, ok := <-ch1:
+			if !ok {
+				ch1 = nil
+			} else {
+				fmt.Println("Received from ch1:", v1)
+			}
+		case v2, ok := <-ch2:
+			if !ok {
+				ch2 = nil
+			} else {
+				fmt.Println("Received from ch2:", v2)
+			}
+		default:
+			fmt.Println("Waiting for data...")
+			time.Sleep(500 * time.Millisecond)
+		}
+
+		if ch1 == nil && ch2 == nil {
+			break
+		}
+	}
+
+	fmt.Println("Both channels closed, program exiting.")
 }
