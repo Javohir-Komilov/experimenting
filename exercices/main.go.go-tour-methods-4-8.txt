@@ -1,0 +1,71 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+	"strconv"
+	"strings"
+)
+
+type Rectangle struct {
+	Width  float64
+	Height float64
+}
+
+func (r Rectangle) Area() float64 {
+	return r.Width * r.Height
+}
+
+func (r Rectangle) Perimeter() float64 {
+	return 2 * (r.Width + r.Height)
+}
+
+func (r *Rectangle) ScaleMethod(f float64) {
+	r.Width = r.Width * f
+	r.Height = r.Height * f
+}
+
+func ScaleFunction(r *Rectangle, f float64) {
+	r.Width = r.Width * f
+	r.Height = r.Height * f
+}
+
+func getFloat() float64 {
+	reader := bufio.NewReader(os.Stdin)
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		log.Println("Failed to read input: ", err)
+		return 0
+	}
+
+	float, err := strconv.ParseFloat(strings.TrimSpace(input), 64)
+	if err != nil {
+		log.Println("Failed to parse input: ", err)
+		return 0
+	}
+
+	return float
+}
+
+func main() {
+	fmt.Print("Input width of rectangle: ")
+	w := getFloat()
+	fmt.Print("Input height of rectangle: ")
+	h := getFloat()
+	fmt.Print("Input scale: ")
+	s := getFloat()
+
+	r := Rectangle{Width: w, Height: h}
+	fmt.Println("Area:", r.Area())
+	fmt.Println("Perimeter:", r.Perimeter())
+
+	r.ScaleMethod(s)
+	fmt.Println("Area after scaling:", r.Area())
+	fmt.Println("Perimeter scaling:", r.Perimeter())
+
+	ScaleFunction(&r, s)
+	fmt.Println("Area after second scaling:", r.Area())
+	fmt.Println("Perimeter second scaling:", r.Perimeter())
+}

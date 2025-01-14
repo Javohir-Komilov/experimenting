@@ -1,0 +1,61 @@
+package main
+
+import (
+    "fmt"
+)
+
+type Stringer interface {
+    String() string
+}
+
+type Person struct {
+    Name string
+    Age  int
+}
+
+func (p Person) String() string {
+    return fmt.Sprintf("Person: %s, Age: %d", p.Name, p.Age)
+}
+
+type Vehicle struct {
+    Make  string
+    Model string
+}
+
+func (v Vehicle) String() string {
+    return fmt.Sprintf("Vehicle: %s %s", v.Make, v.Model)
+}
+
+func describe(i interface{}) {
+    switch v := i.(type) {
+    case Person:
+        fmt.Println("This is a Person:", v.String())
+    case Vehicle:
+        fmt.Println("This is a Vehicle:", v.String())
+    default:
+        fmt.Println("Unknown type")
+    }
+}
+
+func main() {
+    var s Stringer
+
+    s = Person{Name: "Alice", Age: 30}
+    fmt.Println(s.String())
+
+    s = Vehicle{Make: "Toyota", Model: "Corolla"}
+    fmt.Println(s.String())
+
+    describe(Person{Name: "Bob", Age: 25})
+    describe(Vehicle{Make: "Ford", Model: "Fiesta"})
+    describe("A random string")
+
+    var emptyInterface interface{}
+    emptyInterface = 42
+
+    if val, ok := emptyInterface.(int); ok {
+        fmt.Println("The value is an int:", val)
+    } else {
+        fmt.Println("The value is not an int")
+    }
+}
