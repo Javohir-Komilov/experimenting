@@ -2,42 +2,20 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"os"
-	"strings"
+	"time"
 )
 
-type MyReader struct {
-	data string
-}
-
-func (r *MyReader) Read(p []byte) (n int, err error) {
-	if len(r.data) == 0 {
-		return 0, io.EOF
-	}
-	n = copy(p, r.data)
-	r.data = r.data[n:]
-	return n, nil
+func printMessage(message string, done chan bool) {
+	fmt.Println(message)
+	time.Sleep(2 * time.Second)
+	done <- true
 }
 
 func main() {
-	reader := &MyReader{data: "Hello, Golang!"}
-	buf := make([]byte, 8)
-
-	for {
-		n, err := reader.Read(buf)
-		fmt.Print(string(buf[:n]))
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			fmt.Println("Error:", err)
-			break
-		}
-	}
-
-	fmt.Println()
-
-	strReader := strings.NewReader("Go is awesome!")
-	io.Copy(os.Stdout, strReader)
+	done := make(chan bool)
+	go printMessage("Hello from Goroutine 1", done)
+	go printMessage("Hello from Goroutine 2", done)
+	<-done
+	<-done
+	fmt.Println("Both Goroutines finished")
 }

@@ -1,0 +1,50 @@
+package main
+
+import "fmt"
+
+type List[T any] struct {
+	next *List[T]
+	val  T
+}
+
+func (l *List[T]) Add(value T) {
+	if l.next == nil {
+		l.next = &List[T]{val: value}
+	} else {
+		l.next.Add(value)
+	}
+}
+
+func (l *List[T]) Display() {
+	current := l
+	for current != nil {
+		fmt.Println(current.val)
+		current = current.next
+	}
+}
+
+func (l *List[T]) Length() int {
+	length := 0
+	current := l
+	for current != nil {
+		length++
+		current = current.next
+	}
+	return length
+}
+
+func main() {
+	intList := &List[int]{val: 1}
+	intList.Add(2)
+	intList.Add(3)
+	fmt.Println("Integer list:")
+	intList.Display()
+	fmt.Printf("List length: %d\n", intList.Length())
+
+	stringList := &List[string]{val: "first"}
+	stringList.Add("second")
+	stringList.Add("third")
+	fmt.Println("String list:")
+	stringList.Display()
+	fmt.Printf("List length: %d\n", stringList.Length())
+}

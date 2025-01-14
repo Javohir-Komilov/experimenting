@@ -1,0 +1,23 @@
+package main
+
+import "fmt"
+
+func Index[T comparable](s []T, x T) int {
+    for i, v := range s {
+        if v == x {
+            return i
+        }
+    }
+    return -1
+}
+
+func main() {
+    ints := []int{10, 20, 30, 40}
+    fmt.Println(Index(ints, 30))
+
+    strings := []string{"apple", "banana", "watermelon"}
+    fmt.Println(Index(strings, "apple"))
+
+    floats := []float64{1.1, 2.2, 3.3}
+    fmt.Println(Index(floats, 2.2))
+}
