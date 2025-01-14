@@ -1,0 +1,21 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func printMessage(message string, done chan bool) {
+	fmt.Println(message)
+	time.Sleep(2 * time.Second)
+	done <- true
+}
+
+func main() {
+	done := make(chan bool, 2)
+	go printMessage("Hello from Goroutine 1", done)
+	go printMessage("Hello from Goroutine 2", done)
+	<-done
+	<-done
+	fmt.Println("Both Goroutines finished")
+}
